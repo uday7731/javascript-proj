@@ -1,0 +1,230 @@
+<html>
+<style>
+div.class
+{
+text-align:center;
+border:2px solid black;
+margin-left:200px;
+margin-right:200px;
+margin-top:100px;
+background-color:gray;
+text-size:2px;
+color:black;
+}
+div.rules
+{
+text-align:center;
+margin-left:200px;
+margin-right:200px;
+margin-top:30px;
+}
+body
+{
+background-color:skyblue;
+}
+p1{
+color:red;
+text-align:center;
+}
+h3{
+color:blue;
+text-decoration:underline;
+}
+strong
+{
+text-decoration:underline;
+}
+</style>
+
+<body>
+<script language="javascript" type="text/javascript">
+var maxSticks = 21;
+var remSticks = 21;
+
+function btnRestart_onclick() 
+{
+    setup();
+}
+
+function btnOk_onclick() 
+{
+    if(remSticks<=0)
+    {
+        alert("No Stick available");
+        return;
+    }
+    
+   user();
+    cpu();
+}
+
+function user()
+{
+    alert("You have picked up "+ document.getElementById("selMatch").value+" sticks");
+    //document.getElementById("txtYours").value = parseInt(document.getElementById("txtYours").value) + parseInt(document.getElementById("selMatch").value);
+    document.getElementById("txtYours").value = parseInt(document.getElementById("txtYours").value) + parseInt(document.getElementById("selMatch").value);
+    
+    remSticks = remSticks - parseInt(document.getElementById("selMatch").value);
+    
+    resetImages();
+    document.getElementById("divTurnName").innerHTML = "Now, Computer's Turn";
+
+    if(remSticks==1)
+    {
+        alert("Now, computer have to picked up last 1 sticks, so computer is a looser...");
+        document.getElementById("divTurnName").innerHTML = "Computer is a looser";
+        document.forms[0].btnOk.disabled = true;
+        
+        document.getElementById("txtYours").value = parseInt(document.getElementById("txtYours").value) + 1;
+	    remSticks = remSticks - 1;
+	    resetImages();
+    }
+}
+
+function cpu()
+{
+    alert("Now computer is going to picked up "+(5-parseInt(document.getElementById("selMatch").value+" sticks")));
+    document.getElementById("txtComp").value = parseInt(document.getElementById("txtComp").value) + (5-parseInt(document.getElementById("selMatch").value));
+    remSticks = remSticks - (5-parseInt(document.getElementById("selMatch").value));
+
+    resetImages();
+    document.getElementById("divTurnName").innerHTML = "Now, Your's Turn";
+    
+    if(remSticks==1)
+    {
+        alert("Now, You have to picked up last 1 sticks, so you are a looser...");
+        document.getElementById("divTurnName").innerHTML = "You are a looser";
+        document.forms[0].btnOk.disabled = true;
+        
+        document.getElementById("txtYours").value = parseInt(document.getElementById("txtYours").value) + 1;
+	    remSticks = remSticks - 1;
+	    resetImages();
+    }
+}
+
+function resetImages()
+{
+    var TImgs = remSticks;
+    var UImgs = parseInt(document.getElementById("txtYours").value);
+    var CImgs = parseInt(document.getElementById("txtComp").value);
+        
+    document.getElementById("divStk21").innerHTML = getSticks(TImgs-(UImgs+CImgs));
+
+   // if(UImgs>0)
+    {
+        document.getElementById("divStkUser").innerHTML = getSticks(UImgs);
+    }
+
+    //if(CImgs>0)
+    {
+        document.getElementById("divStkComp").innerHTML = getSticks(CImgs);
+    }
+}
+
+function getSticks(N)
+{
+    var s = "";
+    var i;
+    if(N>0)
+    {
+        s = s;
+        for(i=1;i<=N;i++)
+        {
+            s = s + remainingmatches();
+        }
+
+        for(i=N+1;i<=maxSticks;i++)
+        {
+            s = s +getBlankImage();
+        }
+        s = s ;
+    }
+    return s;
+}
+function getBlankSticks(N)
+{
+    var s = "";
+    var i;
+
+    for(i=1;i<=maxSticks;i++)
+    {
+        s = s +getBlankImage();
+    }
+    return s;
+}
+function setup()
+{
+    var s = "";
+    var i;
+    for(i=1;i<=maxSticks;i++)
+    {
+        s = s +remainingmatches();
+    }
+    
+    document.getElementById("divStk21").innerHTML = s;
+    document.getElementById("divStkUser").innerHTML = getBlankSticks(0);
+    document.getElementById("divStkComp").innerHTML = getBlankSticks(0);
+     document.getElementById("divTurnName").innerHTML = "Your Turn";
+
+    maxSticks = 21;
+    remSticks = 21;
+    document.getElementById("txtYours").value = 0;
+    document.getElementById("txtComp").value = 0;
+    document.forms[0].btnOk.disabled = false;
+}
+
+function remainingmatches()
+{
+    var s=1;
+    return s;
+}
+
+function getBlankImage()
+{
+ return 0;   
+}
+
+
+
+function f1()
+{
+}
+
+    </script>
+
+
+<form>
+<div class="rules">
+<strong><span style="font-size: 18pt">21 Matchstick Puzzle game</span></strong><br>
+<h3>RULES:</h3>
+<p1>1.In this Puzzle there are 21 Match Sticks.</p1><br>
+<p1>2.You and Computer will pick up the sticks one by one.</p1><br>
+<p1>3.Sticks can be picked from 1 to 4.</p1><br>
+<p1><strong>4.The who, picked up the last stick, is the loser</strong>. </p1><br>
+</div>
+<div class="class">
+<p>Total Matchsticks</p>
+<input  id="divStk21" type="text" disabled name="divStk21" value="21" size="1">
+<p>Yours</p>
+<input id="txtYours" type="text" size="2" value="0" disabled name="txtYours">
+<input id="divStkUser" placeholder="no.of matchsticks">
+<p>Computer</p>
+<input id="txtComp" type="text" size="2" value="0" disabled name="txtComp">
+<input id="divStkComp" placeholder="no.of matchsticks"><br><br>
+<div id="divTurnName">
+Now, Your Turn</div>
+<select id="selMatch" name="selMatch">
+<option value="1" selected>1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+</select>
+<input id="btnOk" onclick="return btnOk_onclick()" type="button" value="Pick Up" name="btnOk" class="button1">&nbsp;<br><br>
+<input id="btnRestart" onclick="return btnRestart_onclick();" type="button" value="Restart Game" name="btnRestart" class="button1">
+
+
+
+</div>
+</form>
+</body>
+</html>
